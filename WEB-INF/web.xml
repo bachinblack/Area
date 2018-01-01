@@ -5,18 +5,27 @@
          version="3.1">
     <servlet>
         <servlet-name>Main</servlet-name>
-        <servlet-class>MainServlet</servlet-class>
+        <servlet-class>com.main.MainServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>FacebookConnect</servlet-name>
-        <servlet-class>com.log.FacebookLog</servlet-class>
+        <servlet-name>Facebook</servlet-name>
+        <servlet-class>com.Social.FacebookLog</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Twitter</servlet-name>
+        <servlet-class>com.Social.MyTwitter</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>Main</servlet-name>
         <url-pattern>/lol</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>FacebookConnect</servlet-name>
-        <url-pattern>/tryconnect/facebook</url-pattern>
+        <servlet-name>Facebook</servlet-name>
+        <url-pattern>/connect/facebook</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Twitter</servlet-name>
+        <url-pattern>/connect/twitter</url-pattern>
     </servlet-mapping>
 </web-app>
