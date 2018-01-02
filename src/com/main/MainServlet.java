@@ -14,15 +14,15 @@ public class MainServlet extends HttpServlet {
     public static int id = 1;
     public static String FBtoken = null;
     public static String TWtoken = null;
+    public static String LItoken = null;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String lol = "calotte de vos morts";
         Post  post = new Post();
 
-        if (FBtoken == null)
+        if (LItoken == null)
             post.setPost("celestin", "la calotte de vos morts");
         else
-            post.setPost("celestin", FBtoken);
+            post.setPost("celestin", LItoken);
         request.setAttribute( "TName", "@Philippe Bouttereux" + id);
         id = id + 1;
         request.setAttribute( "FName", "Philippe Bouttereux");

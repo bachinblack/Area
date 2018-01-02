@@ -9,11 +9,19 @@
     </servlet>
     <servlet>
         <servlet-name>Facebook</servlet-name>
-        <servlet-class>com.Social.FacebookLog</servlet-class>
+        <servlet-class>com.Social.Facebook</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Twitter</servlet-name>
         <servlet-class>com.Social.MyTwitter</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LinkedIn</servlet-name>
+        <servlet-class>com.Social.LinkedIn</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PostMessage</servlet-name>
+        <servlet-class>com.main.Post</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -27,5 +35,13 @@
     <servlet-mapping>
         <servlet-name>Twitter</servlet-name>
         <url-pattern>/connect/twitter</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LinkedIn</servlet-name>
+        <url-pattern>/connect/linkedin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostMessage</servlet-name>
+        <url-pattern>/post</url-pattern>
     </servlet-mapping>
 </web-app>
