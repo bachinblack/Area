@@ -83,6 +83,7 @@ public class Facebook extends HttpServlet {
         FBstate = State.Connected;
         setName();
         setLastPost();
+        getMailbox();
        return true;
     }
 
@@ -96,9 +97,8 @@ public class Facebook extends HttpServlet {
             for (String line; (line = reader.readLine()) != null;) {
                 response = response + line + "  \n";
             }
-            MainServlet.LItoken = response;
         } catch (Exception e) {
-            MainServlet.LItoken = e.toString();
+            post = e.toString();
         }
         return response;
     }
@@ -125,6 +125,10 @@ public class Facebook extends HttpServlet {
             post = obj.getString("message");
         if (post == null)
             post = "failed to retrieve post";
+    }
+
+    public void getMailbox() {
+
     }
 
     public static void postMessage(String data) {

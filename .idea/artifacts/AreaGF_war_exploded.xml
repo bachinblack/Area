@@ -7,6 +7,10 @@
         <element id="directory" name="classes">
           <element id="module-output" name="AreaGF" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="javax.json-1.0.4 (1)" />
+          <element id="library" level="project" name="lib" />
+        </element>
       </element>
     </root>
   </artifact>

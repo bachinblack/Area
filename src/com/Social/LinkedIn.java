@@ -52,16 +52,14 @@ public class LinkedIn extends HttpServlet {
                 "&client_id=" + pubkey +
                 "&redirect_uri=http://localhost:8080/AreaGF_war_exploded/connect/linkedin" +
                 "&state=lolmdr" +
-                "&scope=r_basicprofile%20r_emailaddress%20w_share";
+                "&scope=r_basicprofile,r_emailaddress,w_share";
 
         LIstate = Facebook.State.Connecting;
         response.sendRedirect("https://www.linkedin.com/uas/oauth2/authorization?" + param);
-
     }
 
     private boolean getAccessToken(String code) {
         if (code == null) {
-            MainServlet.LItoken = "failed to get code";
             return false;
         }
         String param =  "grant_type=authorization_code" +
@@ -77,13 +75,11 @@ public class LinkedIn extends HttpServlet {
                 token = token + line + '\n';
             }
         } catch (Exception e) {
-            MainServlet.LItoken = e.toString();
+            post = e.toString();
         }
         token = token.substring(17);
         token = token.substring(0, token.indexOf('\"'));
         LIstate = Facebook.State.Connected;
-
-        MainServlet.LItoken = token;
         setName();
         return true;
     }
@@ -92,7 +88,7 @@ public class LinkedIn extends HttpServlet {
         String response = "";
 
         try {
-            URLConnection connection = new URL(link + token).openConnection();
+            URLConnection connection = new URL(link + "oauth2_access_token=" + token).openConnection();
             InputStream resp = connection.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(resp, java.nio.charset.StandardCharsets.UTF_8.name()));
             for (String line; (line = reader.readLine()) != null;) {
@@ -105,7 +101,7 @@ public class LinkedIn extends HttpServlet {
     }
 
     public void setName() {
-        String data = getData("https://api.linkedin.com/v1/people/~?format=json&oauth2_access_token=");
+        String data = getData("https://api.linkedin.com/v1/people/~?format=json&");
         if (data == null)
             return ;
 
@@ -117,16 +113,40 @@ public class LinkedIn extends HttpServlet {
     }
 
     public void setPost() {
+        String data = getData("https://api.linkedin.com/v2/connections?q=viewer&start=0&count=0&");
+        if (data == null) {
+            post = "lol";
+            return ;
+        }
+        //JsonReader reader = Json.createReader(new StringReader(data));
+        //JsonObject obj = reader.readObject();
+        //reader.close();
 
     }
 
-    public static void postMessage(String data) {
+    public static void postMessage(String data, String extraContent) {
         String response = "";
-        String param = "message=" + data + "&access_token=" + token;
+        if (extraContent == null)
+            extraContent = "http://cdn.cnn.com/cnnnext/dam/assets/160927210830-tk-ah0927-exlarge-169.jpg";
+        String param =
+                "{\n" +
+                "  \"comment\": \"" + data + "\",\n" +
+                "  \"content\": {\n" +
+                "    \"title\": \"LinkedIn Developers Resources\",\n" +
+                "    \"description\": \"Leverage LinkedIn's APIs to maximize engagement\",\n" +
+                "    \"submitted-url\": \"https://developer.linkedin.com\",  \n" +
+                "    \"submitted-image-url\": \"" + extraContent + "\"\n" +
+                "  },\n" +
+                "  \"visibility\": {\n" +
+                "    \"code\": \"anyone\"\n" +
+                "  }  \n" +
+                "}";
         try {
-            HttpURLConnection connection = (HttpURLConnection) new URL("https://api.linkedin.com/v1/people/~/shares?format=json").openConnection();
+            HttpURLConnection connection = (HttpURLConnection) new URL("https://api.linkedin.com/v1/people/~/shares?oauth2_access_token=" + token).openConnection();
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("x-li-format", "json");
             OutputStream os = connection.getOutputStream();
             os.write(param.getBytes());
             os.flush();
@@ -141,5 +161,3 @@ public class LinkedIn extends HttpServlet {
         }
     }
 }
-
-// https://api.linkedin.com/v2/activityFeeds?q=networkShares&count=2

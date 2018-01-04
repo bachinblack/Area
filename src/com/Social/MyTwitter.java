@@ -10,9 +10,10 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
+import java.util.List;
+
+import twitter4j.*;
+import twitter4j.conf.ConfigurationBuilder;
 
 @WebServlet(name = "MyTwitter")
 public class MyTwitter extends HttpServlet {
@@ -25,107 +26,53 @@ public class MyTwitter extends HttpServlet {
     private String pubkey = "27I79raS7UZzo0iScyhPqKboi";
     private String secret = "7Za10bUgQtTP5RisdzpdSMcTkcHpHyqeMA4LynBPvgD27vUEWN";
     private String token = "empty";
+    static private Twitter twitter = null;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (TWstate == Facebook.State.Off) {
+            ConfigurationBuilder cb = new ConfigurationBuilder();
+            cb.setDebugEnabled(true)
+                    .setOAuthConsumerKey("27I79raS7UZzo0iScyhPqKboi")
+                    .setOAuthConsumerSecret("7Za10bUgQtTP5RisdzpdSMcTkcHpHyqeMA4LynBPvgD27vUEWN")
+                    .setOAuthAccessToken("798920435572310016-ZNJwJXzVDZug1B7BKk4lJ37PLACI1Y6")
+                    .setOAuthAccessTokenSecret("IEqEYPag7BzeDyyZbzYIwZOEFSpByiXEVs6mM9JkccelV");
+            TwitterFactory tf = new TwitterFactory(cb.build());
+            twitter = tf.getInstance();
+            setPost();
+            TWstate = Facebook.State.Connected;
             try {
-                Twitter twitter = TwitterFactory.getSingleton();
-                twitter.updateStatus("lolmdr");
+                AccountSettings sett = twitter.getAccountSettings();
+                User user = twitter.showUser(sett.getScreenName());
+                name = user.getName();
             } catch (TwitterException e) {
                 e.printStackTrace();
             }
-            /*
-            String resp = "";
-            String param = "";
-
-            try {
-                HttpURLConnection connection = (HttpURLConnection) new URL("https://api.twitter.com/oauth/request_token").openConnection();
-                connection.setRequestMethod("POST");
-                connection.setDoOutput(true);
-                OutputStream os = connection.getOutputStream();
-                os.write(param.getBytes());
-                os.flush();
-                os.close();
-                InputStream resps = connection.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(resps, java.nio.charset.StandardCharsets.UTF_8.name()));
-                for (String line; (line = reader.readLine()) != null;) {
-                    resp = resp + line;
-                }
-                post = resp;
-            } catch (Exception e) {
-                post = e.toString();
-            }
-            */
-            TWstate = Facebook.State.Connected;
             String url = "http://localhost:8080/AreaGF_war_exploded/lol";
             response.sendRedirect(url);
-            //getCode(request, response);
-        } else if (TWstate == Facebook.State.Connecting) {
-            //getAccessToken(request.getParameter("code"));
-            //String url = "http://localhost:8080/AreaGF_war_exploded/lol";
-            //response.sendRedirect(url);
         } else {
             String url = "http://localhost:8080/AreaGF_war_exploded/lol";
             response.sendRedirect(url);
         }
     }
 
-    private void getCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        TWstate = Facebook.State.Connecting;
-        String paramAuteur = request.getParameter( "auteur" );
-        String url = "https://facebook.com/v2.11/dialog/oauth?client_id=" + pubkey + "&redirect_uri=http://localhost:8080/AreaGF_war_exploded/connect/facebook&scope=email,user_posts";
-        response.sendRedirect(url);
-    }
-
-    private boolean getAccessToken(String code) {
-
-        if (code == null || code.length() == 0) {
-            return false;
-        }
-        token = "lol";
-        MainServlet.FBtoken = "got a code1";
+    public static void setPost() {
+        List<DirectMessage> messages;
+        Paging paging = new Paging(1);
 
         try {
-            String param = "client_id=" + pubkey + "&client_secret=" + secret + "&redirect_uri=http://localhost:8080/AreaGF_war_exploded/connect/facebook" + "&code=" + code;
-            URLConnection connection = new URL("https://graph.twitter.com/v2.11/oauth/access_token?" + param).openConnection();
-            InputStream response = connection.getInputStream();
-
-            MainServlet.FBtoken = "";
-            BufferedReader reader = new BufferedReader(new InputStreamReader(response, java.nio.charset.StandardCharsets.UTF_8.name()));
-            for (String line; (line = reader.readLine()) != null;) {
-                token = token + line;
-            }
-        } catch (Exception e) {
-            MainServlet.FBtoken = "pute " + e.toString();
-            return false;
+            messages = twitter.getDirectMessages(paging);
+            post = "From: @" + messages.get(0).getSenderScreenName() + " id:" + messages.get(0).getText();
+        } catch (TwitterException e) {
+            post = e.toString();
         }
 
-        token = token.substring(20);
-        token = token.substring(0, token.indexOf('\"'));
-        MainServlet.FBtoken = token;
-        TWstate = Facebook.State.Connected;
-        //getData("feed");
-        return true;
-    }
-
-    public String getData(String dataType) {
-        String response = "";
-
-        try {
-            URLConnection connection = new URL("https://graph.twitter.com/v2.11/me/" + dataType + "?access_token=" + token).openConnection();
-            InputStream resp = connection.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(resp, java.nio.charset.StandardCharsets.UTF_8.name()));
-            for (String line; (line = reader.readLine()) != null;) {
-                response = response + line + '\n';
-            }
-            MainServlet.FBtoken = response;
-        } catch (Exception e) {
-            MainServlet.FBtoken = e.toString();
-        }
-        return response;
     }
 
     public static void postMessage(String data) {
-
+        try {
+            twitter.updateStatus(data);
+        } catch (TwitterException e) {
+            //post = e.toString();
+        }
     }
 }

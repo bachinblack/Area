@@ -21,21 +21,21 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" scope="PROVIDED" name="GlassFish 5.0.0" level="application_server_libraries" />
     <orderEntry type="library" exported="" name="javadoc" level="project" />
-    <orderEntry type="library" exported="" name="libs" level="project" />
+    <orderEntry type="library" exported="" name="javax.json-1.0.4 (1)" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="module-library" exported="">
       <library>
-        <CLASSES />
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/libs/google-api-java-client/libs" />
+        </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="file://$MODULE_DIR$/libs/t4j/twitter4j-core/src/internal-async/java" />
-          <root url="file://$MODULE_DIR$/libs/t4j/twitter4j-core/src/internal-http/java" />
-          <root url="file://$MODULE_DIR$/libs/t4j/twitter4j-core/src/internal-json/java" />
-          <root url="file://$MODULE_DIR$/libs/t4j/twitter4j-core/src/internal-logging/java" />
-          <root url="file://$MODULE_DIR$/libs/t4j/twitter4j-core/src/internal-util/java" />
-          <root url="file://$MODULE_DIR$/libs/t4j/twitter4j-core/src/jmx/java" />
-          <root url="file://$MODULE_DIR$/libs/t4j/twitter4j-core/src/main/java" />
-          <root url="file://$MODULE_DIR$/libs/t4j/twitter4j-core/src/test/java" />
+          <root url="file://$MODULE_DIR$/libs/google-api-java-client/libs" />
+          <root url="file://$MODULE_DIR$/libs/google-api-java-client/libs-sources" />
         </SOURCES>
+        <jarDirectory url="file://$MODULE_DIR$/libs/google-api-java-client/libs" recursive="false" />
+        <jarDirectory url="file://$MODULE_DIR$/libs/google-api-java-client/libs" recursive="false" type="SOURCES" />
+        <jarDirectory url="file://$MODULE_DIR$/libs/google-api-java-client/libs-sources" recursive="false" type="SOURCES" />
       </library>
     </orderEntry>
   </component>

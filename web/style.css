@@ -40,7 +40,6 @@ h2 {
     width: 300px;
     height:280px;
     background-color: transparent;
-    /* border-radius: 40px; */
     border: 3px solid #01A7C2;
     margin: 0;
     transition: all .5s;
@@ -87,12 +86,12 @@ h2 {
 
 .last-post {
     border: 3px solid #01A7C2;
-   /* border-radius: 30px; */
     position: absolute;
     bottom: 8px;
     right: 8px;
     width: 170px;
     height: 160px;
+    overflow-x: hidden;
 }
 
 /******************/
@@ -116,6 +115,44 @@ button {
     transition: all 1s;
 }
 
+.send {
+    height: 60px;
+    width: 160px;
+    margin: 15px;
+}
+
 button:hover {
     background-color: #AAAAAA;
+}
+
+.entry-popup {
+    position: absolute;
+    text-align: center;
+    width: 300px;
+    background-color: #01A7C2;
+    border: 5px solid #0187B2;
+    top: 500px;
+    transition: all .4s;
+    margin: auto;
+    left: 0px;
+    right: 0px;
+    opacity: 0;
+}
+
+.open-entry {
+    opacity: 1;
+}
+
+input {
+    text-align: center;
+    height: 25px;
+    width: 175px;
+    margin: 20px;
+}
+
+textarea {
+    width: 220px;
+    height: 200px;
+    margin: 20px;
+    resize: none;
 }

@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="twitter4j-core-4.0.4">
+  <library name="javax.json-1.0.4 (1)">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libs/twitter4j-core-4.0.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/javax.json-1.0.4 (1).jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
